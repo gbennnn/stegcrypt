@@ -1,4 +1,6 @@
-# app.py
+# Author: Benony Gabriel
+# Description: A Flask application for image steganography with encryption and decryption features.
+
 from flask import Flask, render_template, request, redirect, send_file, flash, url_for
 from werkzeug.utils import secure_filename
 from PIL import Image
