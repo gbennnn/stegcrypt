@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Enkripsi Gambar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-8">
+  <div class="max-w-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Enkripsi Gambar</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded p-4">
+      <label class="block mb-2">Gambar (.png):</label>
+      <input type="file" name="image" accept=".png" required class="w-full mb-4 p-2 border rounded" />
+
+      <label class="block mb-2">Pesan Rahasia:</label>
+      <textarea name="message" required class="w-full mb-4 p-2 border rounded"></textarea>
+
+      <label class="block mb-2">Kunci:</label>
+      <input type="text" name="key" required class="w-full mb-4 p-2 border rounded" />
+
+      <div class="flex justify-between">
+        <a href="/" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Kembali</a>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+          Sisipkan Pesan
+        </button>
+      </div>
+    </form>
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+        {% for category, message in messages %}
+        <p class="text-{{ 'green' if category == 'success' else 'red' }}-700 mb-4">
+          {{ message }}
+        </p>
+        {% endfor %}
+        <div class="flex justify-end gap-2">
+          <a href="/" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Kembali</a>
+          {% if filename %}
+          <a href="{{ url_for('download_file', filename=filename) }}"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            Unduh Gambar
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+  </div>
+
+
+  <footer class="mt-10 text-center text-gray-500 text-sm py-4">
+    &copy; 2025 Sistem Steganografi | Made with ❤️ By Benony Gabriel
+  </footer>
+</body>
+
+</html>
