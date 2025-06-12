@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 import os
 import io
-from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -90,21 +89,15 @@ def encrypt():
         encrypted_message = xor_encrypt_decrypt(message, key)
         encoded_img = encode_message(img, encrypted_message)
 
-        # filename = 'encoded.png'
-        # output_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # encoded_img.save(output_path)
-
-        img_io = BytesIO()
-        encoded_img.save(img_io, 'PNG')
-        img_io.seek(0)
+        filename = 'encoded.png'
+        output_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        encoded_img.save(output_path)
 
         flash('Pesan berhasil disisipkan ke gambar! Klik tombol unduh untuk menyimpan.', 'success')
-        # return redirect(url_for('encrypt', filename=filename))
-        return send_file(img_io, mimetype='image/png')
+        return redirect(url_for('encrypt', filename=filename))
 
-    # filename = request.args.get('filename')
-    # return render_template('encrypt.html', filename=filename)
-    return render_template('encrypt.html')
+    filename = request.args.get('filename')
+    return render_template('encrypt.html', filename=filename)
 
 
 @app.route('/decrypt', methods=['GET', 'POST'])
@@ -194,7 +187,5 @@ def download_file(filename):
 # # ===========================END OF FILE===========================
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(debug=True)
